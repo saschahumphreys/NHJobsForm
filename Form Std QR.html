@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hydraulink Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://iji.09f.myftpupload.com/favicon.ico" type="image/x-icon">
+  <style>
+    :root{--bg:#f4f5f8;--card:#fff;--accent:#00aaff;--accent-dark:#0088cc;--text:#202329;--muted:#7a7f89;--danger:#d32f2f;--ok:#2e7d32;--border:#dde0e7;--header:#171b21;--chip-bg:#d3d3d3;--chip-text:#000;--chip-active-bg:#007bff;--chip-active-text:#fff;--error:red;--primary:#d32f2f;}
+    *{box-sizing:border-box;font-family:Arial,sans-serif;}
+    body{margin:0;background:var(--bg);color:var(--text);}
+    header{padding:1.5rem 1rem;background:#fff;border-bottom:3px solid var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1);}
+    .header-inner{max-width:600px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:.75rem;}
+    .logo{max-width:280px;width:100%;height:auto;}
+    .main-title{font-size:1.4rem;font-weight:bold;color:var(--primary);text-align:center;margin:0;}
+    main{padding:1rem;max-width:600px;margin:0 auto 3rem auto;}
+    .card{background:var(--card);border-radius:.75rem;padding:1.25rem;margin-bottom:1rem;box-shadow:0 2px 6px rgba(0,0,0,.1);border:1px solid #ccc;}
+    .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;}
+    .card-header h2{margin:0;font-size:1.1rem;font-weight:600;}
+    button.primary,button.secondary{border-radius:4px;padding:.5rem 1rem;font-size:.9rem;border:none;cursor:pointer;transition:background .3s;}
+    button.primary{background:var(--primary);color:#fff;}
+    button.primary:hover{background:#b71c1c;}
+    button.secondary{background:#eef0f5;color:#222;}
+    form{display:flex;flex-direction:column;gap:.75rem;background:#fff;padding:1rem;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1);}
+    form.disabled input,form.disabled textarea,form.disabled button.chip{pointer-events:none;opacity:.6;color:#aaa;}
+    label{font-size:.85rem;font-weight:500;}
+    input[type=text],input[type=tel],input[type=number],input[type=email],textarea{width:100%;padding:.65rem;border-radius:4px;border:1px solid #ccc;font-size:.9rem;transition:border .3s;}
+    input:focus,textarea:focus{border-color:var(--primary);outline:none;}
+    textarea{min-height:80px;resize:vertical;}
+    .inline-options{display:flex;flex-wrap:wrap;gap:.35rem;}
+    .inline-options button.chip{border-radius:4px;border:1px solid var(--border);background:var(--chip-bg);color:var(--chip-text);font-size:.78rem;padding:.45rem .9rem;cursor:pointer;display:flex;align-items:center;transition:background .3s;}
+    .inline-options button.chip:before{content:'';}
+    .inline-options button.chip.active{background:var(--chip-active-bg);color:var(--chip-active-text);}
+    .inline-options.single-select button.chip:before{content:'';}
+    .section-title{font-size:1rem;font-weight:600;margin:1rem 0 .4rem 0;color:var(--primary);}
+    .divider{height:1px;background:#e0e3ea;margin:1rem 0;}
+    .pill-toggle{display:inline-flex;align-items:center;gap:.25rem;font-size:.8rem;}
+    .pill-toggle input{margin:0;}
+    .notification-success{font-size:1rem;color:var(--ok);margin-top:1rem;text-align:center;font-weight:500;}
+    .error-field{border-color:var(--error) !important;}
+    .required:after{content:" *";color:var(--danger);font-weight:bold;}
+    .slider-container{margin:0.5rem 0;}
+    .slider-container label{display:block;margin-bottom:.6rem;font-weight:500;}
+    input[type=range]{width:100%;-webkit-appearance:none;height:8px;border-radius:4px;background:#ddd;outline:none;}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--primary);cursor:pointer;}
+    input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--primary);cursor:pointer;border:none;}
+    .weight-value{font-weight:600;margin-left:.5rem;color:var(--primary);}
+    .other-input{display:none;margin-top:.5rem;}
+    .other-input input{width:100%;}
+    .contact-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.25rem;}
+    .contact-row label{margin:0;font-size:.85rem;}
+    .contact-row input{flex:1;}
+    .optional-text{font-size:.78rem;color:#555;margin-left:.5rem;}
+    .machine-specifics-note{font-size:.8rem;color:#000;margin-top:.25rem;}
+    .machine-specifics-note a{color:#000;text-decoration:underline;}
+    .machine-specifics-note a:hover{text-decoration:none;}
+    .note{font-size:.8rem;color:#555;margin-top:.5rem;}
+    footer{padding:1.5rem 1rem;background:#fff;border-top:2px solid var(--primary);font-size:.9rem;color:#333;}
+    .footer-inner{max-width:600px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+    .footer-left{font-weight:500;}
+    .footer-center{font-size:1.1rem;font-weight:bold;color:var(--primary);}
+    .footer-right a{color:#0066cc;text-decoration:none;font-weight:500;}
+    .footer-right a:hover{text-decoration:underline;}
+    @media (max-width:480px){.footer-inner{flex-direction:column;text-align:center;}.footer-center{font-size:1rem;}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <img src="https://iji.09f.myftpupload.com/wp-content/uploads/2025/11/Hydraulink_BonY-CMYK-300x115.jpg" alt="Northern Hydraulink Logo" class="logo">
+      <h2 style="font-size:1.2rem;color:#333;margin:0;">Northern Hydraulink Breakdown Booking Form</h2>
+    </div>
+  </header>
+
+  <main>
+    <section id="view-machine-screen" class="view" style="display:block;">
+      <div class="card">
+        <div class="card-header"><h2>Log Breakdown Request</h2></div>
+
+        <!-- Phone + OTP -->
+        <form id="phone-form" onsubmit="sendOTP(event)" style="display:block;">
+          <label for="phone">Your Mobile (for contact & record):</label>
+          <input type="tel" id="phone" placeholder="+61400123456">
+          <button type="submit" class="primary">Send Passcode</button>
+        </form>
+
+        <form id="otp-form" onsubmit="verifyOTP(event)" style="display:none;">
+          <label for="otp">Enter your 4-digit SMS Passcode:</label>
+          <input type="text" id="otp" placeholder="1234" maxlength="4">
+          <button type="submit" class="primary">Verify</button>
+        </form>
+
+        <div id="request-form-container" style="display:none;">
+          <div id="submit-message" class="notification-success" style="display:none;">Your breakdown request has been submitted. Our Despatch Manager will contact you shortly.</div>
+          <form id="request-form-form" onsubmit="submitOrUpdateRequest(event)">
+
+            <!-- Equipment Type -->
+            <div class="section-title">Equipment Type</div>
+            <div class="inline-options single-select" id="equipment-type-options">
+              <button type="button" class="chip" data-value="excavator">Excavator</button>
+              <button type="button" class="chip" data-value="skid-steer">Skid Steer</button>
+              <button type="button" class="chip" data-value="boom-lift">Boom Lift</button>
+              <button type="button" class="chip" data-value="scissor-lift">Scissor Lift</button>
+              <button type="button" class="chip" data-value="forklift">Forklift</button>
+              <button type="button" class="chip" data-value="crane">Crane</button>
+              <button type="button" class="chip" data-value="attachment">Attachment (eg hammer/auger/grab)</button>
+              <button type="button" class="chip" data-value="tractor-backhoe">Tractor/Back hoe</button>
+              <button type="button" class="chip" data-value="tipper">Tipper</button>
+              <button type="button" class="chip" data-value="dozer">Dozer</button>
+              <button type="button" class="chip" data-value="other-truck">Other Truck/Trailer</button>
+              <button type="button" class="chip" data-value="hose-parts">Hose/Parts Supply Only</button>
+              <button type="button" class="chip" data-value="other">Other</button>
+            </div>
+            <div id="other-equipment-input" class="other-input">
+              <label for="other-equipment-text">Specify Other:</label>
+              <input type="text" id="other-equipment-text" placeholder="e.g., shredder, industrial machine, boat etc.">
+            </div>
+
+            <!-- Approx Machine Weight -->
+            <div class="slider-container">
+              <label for="weight-slider">Approx Machine Weight:</label>
+              <input type="range" id="weight-slider" min="0" max="31" value="0">
+              <span id="weight-value" class="weight-value">NA</span>
+            </div>
+
+            <!-- Service Tech Arrival Time -->
+            <div class="section-title">Service Tech Arrival Time Requested</div>
+            <div class="inline-options single-select" id="urgency-options">
+              <button type="button" class="chip urgency-chip" data-value="flexible">Anytime, I'm flexible</button>
+              <button type="button" class="chip urgency-chip" data-value="end-today">By end of today</button>
+              <button type="button" class="chip urgency-chip" data-value="within-4hrs">Within 4hrs</button>
+              <button type="button" class="chip urgency-chip" data-value="asap">ASAP</button>
+            </div>
+            <p class="note">For ASAP, we aim for next available Service Technician which is usually 30mins to 2hrs, however this is difficult to promise. We will always call or SMS you with updates of ETA once we can be sure.</p>
+
+            <!-- Service Needed -->
+            <div class="section-title">Select Service Needed</div>
+            <div class="inline-options">
+              <button type="button" class="chip service-chip" data-value="parts-supply">Parts Supply only</button>
+              <button type="button" class="chip service-chip" data-value="hyd-hose-leaking">Hydraulic Hose Leaking</button>
+              <button type="button" class="chip service-chip" data-value="hyd-leak-other">Hydraulic Leak Other</button>
+              <button type="button" class="chip service-chip" data-value="oil-refill-needed">Oil Refill Needed</button>
+              <button type="button" class="chip service-chip" data-value="physical">Physical damage/welding or other repair needed</button>
+            </div>
+
+            <!-- Specific Details -->
+            <label>Specific Details:</label>
+            <textarea id="details" placeholder="Describe the issue in detail..."></textarea>
+
+            <div class="divider"></div>
+
+            <!-- Status of Equipment -->
+            <div class="section-title">Status of Equipment?</div>
+            <div class="inline-options" id="status-options">
+              <button type="button" class="chip status-chip" data-value="usable-leaking">I can use it but still leaking</button>
+              <button type="button" class="chip status-chip" data-value="parked-ready">It’s parked safely and ready for you to work on</button>
+              <button type="button" class="chip status-chip" data-value="not-on-site">I don't know, I'm not on site</button>
+              <button type="button" class="chip status-chip" data-value="stopped">It’s stopped/unmovable</button>
+              <button type="button" class="chip status-chip" data-value="unsafe">It’s unsafe</button>
+              <button type="button" class="chip status-chip" data-value="roadside">It’s on a roadside</button>
+              <button type="button" class="chip status-chip" data-value="cleanup">Cleanup needed</button>
+              <button type="button" class="chip status-chip" data-value="know-issue">I know/can see what the issue is</button>
+              <button type="button" class="chip status-chip" data-value="keys">I have the keys</button>
+              <button type="button" class="chip status-chip" data-value="other">Other</button>
+            </div>
+            <div id="status-other-input" class="other-input">
+              <label for="status-other-text">Specify Other:</label>
+              <input type="text" id="status-other-text" placeholder="Enter other status...">
+            </div>
+
+            <!-- Location (Simplified) -->
+            <label>Suburb, Street Number:</label>
+            <input type="text" id="location-address" placeholder="e.g., Campbellfield, 123 Main St">
+            <label>Site Name (if applicable):</label>
+            <input type="text" id="site-name" placeholder="e.g., Construction Site A">
+
+            <!-- Contact Details -->
+            <div class="section-title">Contact Details</div>
+            <div class="contact-row">
+              <label>Your Name:</label>
+              <input type="text" id="user-name" placeholder="Enter your name">
+            </div>
+            <div class="contact-row">
+              <label>Your Mobile:</label>
+              <span id="user-contact"></span>
+            </div>
+
+            <label class="pill-toggle"><input type="checkbox" id="best-contact" checked> I am the best site contact</label>
+            <label class="pill-toggle"><input type="checkbox" id="alt-contact">Someone else will be the main site contact</label>
+            <div id="alt-contact-fields" style="display:none;">
+              <label>Name:</label>
+              <input type="text" id="alt-name">
+              <label>Phone:</label>
+              <input type="tel" id="alt-phone">
+            </div>
+
+            <label>Company:</label>
+            <input type="text" id="company" placeholder="Your company name">
+
+            <div class="contact-row">
+              <label>PO Number (if required):</label>
+              <input type="text" id="po-number" placeholder="Enter PO if applicable">
+            </div>
+            <div class="contact-row">
+              <label>Email:</label>
+              <input type="email" id="user-email" placeholder="your@email.com">
+              <span class="optional-text">(optional)</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Machine Specifics -->
+            <div class="section-title">Machine Specifics</div>
+            <p class="machine-specifics-note">
+              Phone: <a href="tel:+61419610839">(0419 610 839)</a>
+            </p>
+            <label>Asset/Unit Number:</label>
+            <input type="text" id="machine-model-number" placeholder="e.g., X200">
+            <label>Brand:</label>
+            <input type="text" id="machine-brand" placeholder="e.g., Caterpillar">
+            <label>Model:</label>
+            <input type="text" id="machine-model" placeholder="e.g., Excavator X200">
+            <label>Serial:</label>
+            <input type="text" id="machine-serial" placeholder="e.g., SN12345">
+
+            <button type="submit" class="primary" id="submit-btn">Submit Request</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">Northern Hydraulink (t/a Campbellfield Hose & Fittings P/L)</div>
+      <div class="footer-center">0419 610 839</div>
+      <div class="footer-right"><a href="https://www.northernhydraulink.com.au" target="_blank">www.northernhydraulink.com.au</a></div>
+    </div>
+  </footer>
+
+  <script>
+    const OWNER_PHONE = '+61419610839';
+    const OWNER_EMAIL = 'sales@northernhydraulink.com.au';
+    const CLICKSEND_USERNAME = 'saschahumphreys@gmail.com';
+    const CLICKSEND_API_KEY = 'E32A891A-68F2-5667-F556-0F1D0E896A88';
+    const auth = btoa(`${CLICKSEND_USERNAME}:${CLICKSEND_API_KEY}`);
+    const headers = { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' };
+    let currentPhone = '';
+    let generatedOTP = null;
+    let currentJobId = null;
+    let isReadonly = false;
+    let fromEmailId = null;
+
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      currentJobId = params.get('id');
+      isReadonly = params.has('readonly');
+      if (currentJobId) {
+        loadJob(currentJobId);
+        document.getElementById('phone-form').style.display = 'none';
+        document.getElementById('otp-form').style.display = 'none';
+        document.getElementById('request-form-container').style.display = 'block';
+        if (isReadonly) {
+          document.getElementById('request-form-form').classList.add('disabled');
+          document.getElementById('submit-btn').style.display = 'none';
+        } else {
+          document.getElementById('submit-btn').textContent = 'Update';
+        }
+      } else {
+        document.getElementById('phone-form').style.display = 'block';
+      }
+      try {
+        const r = await fetch('https://rest.clicksend.com/v3/email/addresses', { method: 'GET', headers });
+        const d = await r.json();
+        const a = d.data.data.find(x => x.email_address === OWNER_EMAIL);
+        if (a) fromEmailId = a.email_address_id;
+      } catch (e) { console.error(e); }
+      setupWeightSlider();
+      setupOtherEquipment();
+      setupStatusOther();
+      setupChips();
+    }
+
+    /* ---------- OTP (4-digit) ---------- */
+    async function sendOTP(e) {
+      e.preventDefault();
+      const phoneInput = document.getElementById('phone');
+      currentPhone = phoneInput.value.trim();
+      if (!/^\+?[0-9]{10,15}$/.test(currentPhone)) { alert('Valid phone required'); return; }
+      generatedOTP = Math.floor(1000 + Math.random() * 9000);
+      console.log(`${currentPhone}: Passcode: ${generatedOTP},  for Northern Hydraulink Breakdown Booking Form`);
+
+      try {
+        await fetch('https://rest.clicksend.com/v3/sms/send', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ messages: [{ to: currentPhone, from: 'Hydraulink', body: `Passcode: ${generatedOTP}, for Northern Hydraulink Breakdown Booking Form` }] })
+        });
+        document.getElementById('phone-form').style.display = 'none';
+        document.getElementById('otp-form').style.display = 'block';
+        document.getElementById('otp').focus();
+      } catch (err) {
+        console.error(err);
+        alert('SMS failed – check console');
+      }
+    }
+
+    function verifyOTP(e) {
+      e.preventDefault();
+      const entered = document.getElementById('otp').value.trim();
+      if (entered === generatedOTP.toString()) {
+        document.getElementById('otp-form').style.display = 'none';
+        document.getElementById('request-form-container').style.display = 'block';
+        document.getElementById('user-contact').textContent = currentPhone;
+        generatedOTP = null;
+      } else {
+        alert('Incorrect passcode');
+      }
+    }
+
+    /* ---------- UI ---------- */
+    function setupWeightSlider() {
+      const s = document.getElementById('weight-slider');
+      const v = document.getElementById('weight-value');
+      s.addEventListener('input', () => {
+        const val = s.value;
+        v.textContent = val == 0 ? 'NA' : val == 31 ? '30+ Tonnes' : `${val} Tonnes`;
+      });
+    }
+
+    function setupOtherEquipment() {
+      document.querySelectorAll('#equipment-type-options .chip').forEach(c => {
+        c.addEventListener('click', () => {
+          document.querySelectorAll('#equipment-type-options .chip').forEach(x => x.classList.remove('active'));
+          c.classList.add('active');
+          document.getElementById('other-equipment-input').style.display = c.dataset.value === 'other' ? 'block' : 'none';
+          if (c.dataset.value !== 'other') document.getElementById('other-equipment-text').value = '';
+        });
+      });
+    }
+
+    function setupStatusOther() {
+      document.querySelectorAll('#status-options .chip').forEach(c => {
+        c.addEventListener('click', () => {
+          c.classList.toggle('active');
+          document.getElementById('status-other-input').style.display = c.dataset.value === 'other' && c.classList.contains('active') ? 'block' : 'none';
+          if (!c.classList.contains('active')) document.getElementById('status-other-text').value = '';
+        });
+      });
+    }
+
+    function setupChips() {
+      // All non-single-select chips (including status) now toggle
+      document.querySelectorAll('.inline-options:not(.single-select) .chip').forEach(c => {
+        c.addEventListener('click', () => c.classList.toggle('active'));
+      });
+      document.querySelectorAll('.single-select .chip').forEach(c => {
+        c.addEventListener('click', () => {
+          c.parentElement.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+          c.classList.add('active');
+        });
+      });
+    }
+
+    document.getElementById('alt-contact').addEventListener('change', e => {
+      document.getElementById('alt-contact-fields').style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    /* ---------- Submit (no validation) ---------- */
+    async function submitOrUpdateRequest(e) {
+      e.preventDefault();
+      const data = collectFormData();
+      if (currentJobId) {
+        updateJob(currentJobId, data);
+        alert('Updated');
+      } else {
+        const id = Date.now().toString();
+        saveJob(id, data);
+        document.getElementById('request-form-form').classList.add('disabled');
+        document.getElementById('submit-message').style.display = 'block';
+        const ro = `${window.location.origin}${window.location.pathname}?id=${id}&readonly=true`;
+        const ed = `${window.location.origin}${window.location.pathname}?id=${id}`;
+        await sendNotifications(ro, ed, data);
+      }
+    }
+
+    function collectFormData() {
+      const eq = document.querySelector('#equipment-type-options .chip.active');
+      const wVal = document.getElementById('weight-slider').value;
+      const weight = wVal == 0 ? 'NA' : wVal == 31 ? '30+ Tonnes' : `${wVal} Tonnes`;
+
+      return {
+        equipmentType: eq ? eq.dataset.value : '',
+        equipmentOther: eq && eq.dataset.value === 'other' ? document.getElementById('other-equipment-text').value : '',
+        weight,
+        services: Array.from(document.querySelectorAll('.service-chip.active')).map(c => c.dataset.value),
+        urgency: document.querySelector('.urgency-chip.active')?.dataset.value || '',
+        statuses: Array.from(document.querySelectorAll('.status-chip.active')).map(c => c.dataset.value),
+        statusOther: document.querySelector('#status-options .chip[data-value="other"].active') ? document.getElementById('status-other-text').value : '',
+        location: document.getElementById('location-address').value,
+        siteName: document.getElementById('site-name').value,
+        company: document.getElementById('company').value,
+        userName: document.getElementById('user-name').value,
+        poNumber: document.getElementById('po-number').value,
+        email: document.getElementById('user-email').value,
+        bestContact: document.getElementById('best-contact').checked,
+        altContact: document.getElementById('alt-contact').checked ? { name: document.getElementById('alt-name').value, phone: document.getElementById('alt-phone').value } : null,
+        details: document.getElementById('details').value,
+        phone: currentPhone,
+        assetNumber: document.getElementById('machine-model-number').value,
+        brand: document.getElementById('machine-brand').value,
+        model: document.getElementById('machine-model').value,
+        serial: document.getElementById('machine-serial').value
+      };
+    }
+
+    function saveJob(id, data) { const j = JSON.parse(localStorage.getItem('jobs')||'[]'); j.push({id,data}); localStorage.setItem('jobs',JSON.stringify(j)); }
+    function updateJob(id, data) { const j = JSON.parse(localStorage.getItem('jobs')||'[]'); const i = j.findIndex(x=>x.id===id); if(i>-1){j[i].data=data; localStorage.setItem('jobs',JSON.stringify(j));} }
+
+    function loadJob(id) {
+      const j = JSON.parse(localStorage.getItem('jobs')||'[]');
+      const job = j.find(x=>x.id===id);
+      if (!job) { alert('Job not found'); return; }
+      const d = job.data;
+      const eq = document.querySelector(`#equipment-type-options .chip[data-value="${d.equipmentType}"]`);
+      if (eq) eq.classList.add('active');
+      if (d.equipmentType==='other') { document.getElementById('other-equipment-input').style.display='block'; document.getElementById('other-equipment-text').value=d.equipmentOther; }
+      document.getElementById('weight-slider').value = d.weight==='NA'?0:d.weight==='30+ Tonnes'?31:parseInt(d.weight);
+      document.getElementById('weight-value').textContent = d.weight;
+      d.services.forEach(v=>document.querySelector(`.service-chip[data-value="${v}"]`)?.classList.add('active'));
+      const urg = document.querySelector(`.urgency-chip[data-value="${d.urgency}"]`);
+      if (urg) urg.classList.add('active');
+      d.statuses.forEach(v=>document.querySelector(`.status-chip[data-value="${v}"]`)?.classList.add('active'));
+      if (d.statusOther) { document.querySelector('#status-options .chip[data-value="other"]').classList.add('active'); document.getElementById('status-other-input').style.display='block'; document.getElementById('status-other-text').value=d.statusOther; }
+      document.getElementById('location-address').value = d.location;
+      document.getElementById('site-name').value = d.siteName || '';
+      document.getElementById('company').value = d.company;
+      document.getElementById('user-name').value = d.userName||'';
+      document.getElementById('po-number').value = d.poNumber||'';
+      document.getElementById('user-email').value = d.email||'';
+      document.getElementById('best-contact').checked = d.bestContact;
+      if (d.altContact) { document.getElementById('alt-contact').checked=true; document.getElementById('alt-contact-fields').style.display='block'; document.getElementById('alt-name').value=d.altContact.name; document.getElementById('alt-phone').value=d.altContact.phone; }
+      document.getElementById('details').value = d.details;
+      document.getElementById('user-contact').textContent = d.phone;
+      document.getElementById('machine-model-number').value = d.assetNumber || '';
+      document.getElementById('machine-brand').value = d.brand;
+      document.getElementById('machine-model').value = d.model;
+      document.getElementById('machine-serial').value = d.serial;
+    }
+
+    async function sendNotifications(ro, ed, data) {
+      const msg = `Your request is logged. View: ${ro}`;
+      await sendSMS(currentPhone, msg);
+      await sendSMS(OWNER_PHONE, `New request: ${ed}`);
+      if (fromEmailId) await sendEmail(OWNER_EMAIL, 'New Breakdown Request', `Details: ${ed}`);
+    }
+
+    async function sendSMS(to, body) {
+      try { await fetch('https://rest.clicksend.com/v3/sms/send', {method:'POST',headers,body:JSON.stringify({messages:[{to,from:'Hydraulink',body}]})}); }
+      catch(e){console.error(e);}
+    }
+
+    async function sendEmail(to, subj, body) {
+      try { await fetch('https://rest.clicksend.com/v3/email/send', {method:'POST',headers,body:JSON.stringify({to:[{email:to,name:'Sales'}],from:{email_address_id:fromEmailId,name:'Hydraulink'},subject:subj,body})}); }
+      catch(e){console.error(e);}
+    }
+
+    init();
+  </script>
+</body>
+</html>
