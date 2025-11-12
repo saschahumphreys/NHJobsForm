@@ -288,13 +288,13 @@
       currentPhone = phoneInput.value.trim();
       if (!/^\+?[0-9]{10,15}$/.test(currentPhone)) { alert('Valid phone required'); return; }
       generatedOTP = Math.floor(1000 + Math.random() * 9000);
-      console.log(`${currentPhone}: Passcode: ${generatedOTP},  for Northern Hydraulink Breakdown Booking Form`);
+      console.log(`4-digit Passcode for ${currentPhone}: ${generatedOTP}`);
 
       try {
         await fetch('https://rest.clicksend.com/v3/sms/send', {
           method: 'POST',
           headers,
-          body: JSON.stringify({ messages: [{ to: currentPhone, from: 'Hydraulink', body: `Passcode: ${generatedOTP}, for Northern Hydraulink Breakdown Booking Form` }] })
+          body: JSON.stringify({ messages: [{ to: currentPhone, from: 'Hydraulink', body: `Your 4-digit passcode is ${generatedOTP}` }] })
         });
         document.getElementById('phone-form').style.display = 'none';
         document.getElementById('otp-form').style.display = 'block';
@@ -449,8 +449,8 @@
     }
 
     async function sendNotifications(ro, ed, data) {
-      const msg = `Your request is logged. View: ${ro}`;
-      await sendSMS(currentPhone, msg);
+      // Comment out SMS to customer
+      // await sendSMS(currentPhone, `Your request is logged. View: ${ro}`);
       await sendSMS(OWNER_PHONE, `New request: ${ed}`);
       if (fromEmailId) await sendEmail(OWNER_EMAIL, 'New Breakdown Request', `Details: ${ed}`);
     }
